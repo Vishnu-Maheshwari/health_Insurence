@@ -117,7 +117,7 @@ if st.button("🔮 Predict Insurance Cost"):
         "region_southeast": [
             1 if region == "Southeast" else 0
         ],
-        "bmi_category_obese": [
+        "bmi_category_Obese": [
             1 if bmi_category == "Obese" else 0
         ]
     })
@@ -142,7 +142,15 @@ if st.button("🔮 Predict Insurance Cost"):
     # Make Prediction
     # -----------------------------
 
-    prediction = model.predict(input_data)[0]
+    # Ensure the input has exactly the same feature names and order
+# as the trained model.
+if hasattr(model, "feature_names_in_"):
+    input_data = input_data.reindex(
+        columns=model.feature_names_in_,
+        fill_value=0
+    )
+
+prediction = model.predict(input_data)[0]
 
 
     # -----------------------------
